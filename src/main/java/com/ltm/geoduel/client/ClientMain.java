@@ -13,7 +13,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Properties;
 
-/** Điểm vào của client desktop. Tham số tuỳ chọn: đường dẫn config (mặc định config.properties). */
+/**
+ * Điểm vào của client desktop.
+ * Tham số tuỳ chọn: [đường dẫn config] [host server] [port server]
+ * — host/port trên dòng lệnh GHI ĐÈ config, dùng khi chơi LAN với máy khác.
+ */
 public final class ClientMain {
     public static void main(String[] args) {
         Properties props = new Properties();
@@ -21,10 +25,14 @@ public final class ClientMain {
         try (InputStreamReader r = new InputStreamReader(new FileInputStream(configPath), StandardCharsets.UTF_8)) {
             props.load(r);
         } catch (Exception ignored) {
-            // không có config → dùng mặc định localhost:5555
+            // không có config → dùng mặc định localhost:5555 (client không cần MySQL)
         }
-        String host = props.getProperty("server.host", "localhost");
-        int port = Integer.parseInt(props.getProperty("server.port", "5555"));
+        String host = args.length > 1 && !args[1].isBlank()
+                ? args[1].trim()
+                : props.getProperty("server.host", "localhost");
+        int port = args.length > 2
+                ? Integer.parseInt(args[2].trim())
+                : Integer.parseInt(props.getProperty("server.port", "5555"));
         Path assetsDir = Path.of(props.getProperty("assets.dir", "assets"));
 
         FlatLightLaf.setup();

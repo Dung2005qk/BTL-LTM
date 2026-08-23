@@ -50,13 +50,33 @@ scripts\export-db.bat          # cập nhật database\seed-data.sql để commi
 3. Chạy: `java -cp target\geoduel.jar com.ltm.geoduel.tools.MapillaryCollector`
 4. Nạp lại DB: `scripts\seed-assets.bat`
 
-## Chơi
+## Chơi trên một máy
 
 ```
 scripts\run-server.bat         # cửa sổ 1: server, cổng 5555
 scripts\run-client.bat         # client thứ nhất (demo1/123456)
 scripts\run-client.bat         # client thứ hai (demo2/123456)
 ```
+
+## Chơi qua mạng LAN (mỗi người một máy)
+
+KHÔNG cần máy server riêng — server chạy chung máy với một người chơi.
+Client ở máy khác **không cần MySQL, không cần ảnh** (mọi dữ liệu server gửi qua TCP).
+
+**Máy chủ trận (người A):**
+1. Chạy `scripts\allow-firewall.bat` bằng chuột phải → *Run as administrator*
+   (mở cổng 5555; chỉ cần làm một lần).
+2. Xem IP LAN của mình: `ipconfig` → dòng *IPv4 Address* của Wi-Fi/Ethernet
+   (ví dụ `192.168.0.101`).
+3. `scripts\run-server.bat`, rồi `scripts\run-client.bat` để tự chơi.
+
+**Máy người B (cùng Wi-Fi/mạng với A):**
+1. Clone repo, cài JDK 17+ và Maven, chạy `mvn package -DskipTests`
+   (không cần MySQL, không cần sửa config).
+2. `scripts\run-client-lan.bat` → nhập IP của máy A → đăng nhập/tạo tài khoản và chơi.
+
+Khác mạng (xa nhau): cài [Tailscale](https://tailscale.com) hoặc Radmin VPN trên cả
+hai máy (tạo mạng LAN ảo miễn phí), rồi làm y hệt các bước trên với IP ảo đó.
 
 Sảnh → chọn người **đang rảnh** → **Mời thi đấu** → bên kia **Chấp nhận** → vào trận.
 
