@@ -1,0 +1,20 @@
+# Build
+target/
+
+# BÍ MẬT — mật khẩu MySQL + token Mapillary (dùng file *.example.properties làm mẫu)
+config.properties
+config-test.properties
+
+# Ảnh gốc tải về (nặng, tái tạo được bằng collector) — giữ manifest để resume
+assets/raw/*
+!assets/raw/manifest.json
+
+# Cache tile bản đồ + nhạc tự tổng hợp (client tự tạo lại)
+assets/tilecache/
+assets/audio/
+
+# IDE / rác
+*.log
+.idea/
+*.iml
+.vscode/
