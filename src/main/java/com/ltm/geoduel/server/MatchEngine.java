@@ -247,7 +247,7 @@ public class MatchEngine {
     private void score(Slot s, LocationData loc) {
         if (s.gLat != null && s.gLng != null) {
             s.distKm = GeoUtil.haversineKm(s.gLat, s.gLng, loc.targetLat, loc.targetLng);
-            s.score = GeoUtil.roundScore(s.distKm, server.config().scoreDecayKm());
+            s.score = GeoUtil.roundScore(s.distKm);
         } else {
             s.distKm = null;
             s.score = 0;
