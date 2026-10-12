@@ -18,11 +18,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Kho tile bản đồ Carto Voyager dùng chung cho mọi thành phần vẽ bản đồ
+ * Kho tile bản đồ OpenStreetMap dùng chung cho mọi thành phần vẽ bản đồ
  * (MapPanel, WorldBackdrop): cache RAM + đĩa (assets/tilecache), tải nền bất đồng bộ.
+ * OSM không cần API key nhưng yêu cầu User-Agent riêng và tải có chừng mực
+ * (https://operations.osmfoundation.org/policies/tiles/) — game nhỏ + cache
+ * sẵn địa phương nên tuân thủ được.
  */
 public final class TileStore {
-    private static final String[] SUBDOMAINS = {"a", "b", "c", "d"};
     private static final String UA = "GeoDuelLTM/1.0 (university course project)";
     private static final int MEM_CACHE_MAX = 700; // ~46 MB
 
@@ -87,9 +89,8 @@ public final class TileStore {
             }
         } catch (IOException ignored) {}
         try {
-            String sub = SUBDOMAINS[Math.floorMod(x + y, SUBDOMAINS.length)];
             HttpRequest req = HttpRequest.newBuilder(URI.create(
-                            "https://" + sub + ".basemaps.cartocdn.com/rastertiles/voyager/" + key + ".png"))
+                            "https://tile.openstreetmap.org/" + key + ".png"))
                     .header("User-Agent", UA)
                     .timeout(Duration.ofSeconds(15)).GET().build();
             HttpResponse<byte[]> resp = HTTP.send(req, HttpResponse.BodyHandlers.ofByteArray());
