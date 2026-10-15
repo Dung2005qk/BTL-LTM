@@ -47,7 +47,7 @@ public class CountdownBar extends JComponent {
         int remainSec = (int) Math.ceil(remainMs / 1000.0);
 
         // chữ mm:ss
-        String label = String.format("00:%02d", Math.min(99, remainSec));
+        String label = String.format("%02d:%02d", remainSec / 60, remainSec % 60);
         g2.setFont(Theme.monoBold(16));
         FontMetrics fm = g2.getFontMetrics();
         boolean urgent = remainSec <= 10 && deadlineMs != 0;
