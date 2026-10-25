@@ -38,12 +38,12 @@ public class MapPanel extends JComponent {
     public interface PinListener { void onPinPlaced(double lat, double lng); }
 
     private static final int TILE = 256;
-    private static final double MIN_ZOOM = 4.5, MAX_ZOOM = 17.0;
+    private static final double MIN_ZOOM = 4.5, MAX_ZOOM = 17.5;
     private static final String ATTRIBUTION = "© OpenStreetMap contributors © CARTO";
 
     // ---- khung nhìn: tâm (lat/lng) + zoom liên tục ----
-    private double centerLat = 16.0, centerLng = 108.0; // tâm cân đối giữa dải đất liền và Hoàng Sa, Trường Sa
-    private double zoom = 5.2;
+    private double centerLat = 21.0285, centerLng = 105.8542; // tâm cân đối giữa dải đất liền và Hoàng Sa, Trường Sa
+    private double zoom = 14.0;
     private boolean autoFit = true; // chưa ai đụng vào → tự về khung nhìn Việt Nam
 
     private boolean interactive = false;
@@ -214,12 +214,18 @@ public class MapPanel extends JComponent {
         repaint();
     }
 
+//    private void fitWholeWorld() {
+//        if (getWidth() == 0) return;
+//        centerLat = 16.0;
+//        centerLng = 108.0; // Tâm dải đất Việt Nam và biển Đông
+//        double zh = Math.log(getHeight() / (0.048 * TILE)) / Math.log(2);
+//        zoom = Math.max(MIN_ZOOM, Math.min(zh, 7.5));
+//    }
     private void fitWholeWorld() {
-        if (getWidth() == 0) return;
-        centerLat = 16.0;
-        centerLng = 108.0; // Tâm dải đất Việt Nam và biển Đông
-        double zh = Math.log(getHeight() / (0.048 * TILE)) / Math.log(2);
-        zoom = Math.max(MIN_ZOOM, Math.min(zh, 7.5));
+        if (getWidth() == 0 || getHeight() == 0) return;
+        centerLat = 21.0285;
+        centerLng = 105.8542;
+        zoom = 14.0;
     }
 
     private void fitToResult() {
@@ -234,9 +240,9 @@ public class MapPanel extends JComponent {
             minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y);
         }
         double spanX = Math.max(maxX - minX, 1e-6), spanY = Math.max(maxY - minY, 1e-6);
-        double zx = Math.log(getWidth() * 0.7 / (spanX * TILE)) / Math.log(2);
-        double zy = Math.log(getHeight() * 0.7 / (spanY * TILE)) / Math.log(2);
-        zoom = Math.max(MIN_ZOOM, Math.min(Math.min(zx, zy), 13));
+        double zx = Math.log(getWidth() * 0.85 / (spanX * TILE)) / Math.log(2);
+        double zy = Math.log(getHeight() * 0.85 / (spanY * TILE)) / Math.log(2);
+        zoom = Math.max(MIN_ZOOM, Math.min(Math.min(zx, zy), 15));
         double[] c = worldToLatLng((minX + maxX) / 2, (minY + maxY) / 2);
         centerLat = c[0];
         centerLng = c[1];

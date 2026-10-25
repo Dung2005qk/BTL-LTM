@@ -25,7 +25,7 @@ public final class ServerConfig {
     public int roundDurationSec() { return Integer.parseInt(props.getProperty("round.duration.sec", "180")); }
     /** Khi một bên đã nộp, bên kia chỉ còn tối đa chừng này giây. */
     public int roundSnipeSec() { return Integer.parseInt(props.getProperty("round.snipe.sec", "15")); }
-    public int roundResultSec() { return Integer.parseInt(props.getProperty("round.result.sec", "5")); }
+    public int roundResultSec() { return Integer.parseInt(props.getProperty("round.result.sec", "7")); }
     public int roundsPerMatch() { return Integer.parseInt(props.getProperty("rounds.per.match", "5")); }
     public double scoreDecayKm() { return Double.parseDouble(props.getProperty("score.decay.km", "150")); }
 }
